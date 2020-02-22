@@ -32,19 +32,50 @@ int get_line(int fd, char* ptr) {
     return count;
 }
 
-void to_lowercase(char c[]) {
-    int i = 0;
-
-    while (c[i] != '\0') {
-        if (c[i] >= 'A' && c[i] <= 'Z') {
-            c[i] = (char)(c[i] - 'A' + 'a');
-        }
-        i++;
+char to_lowercase(char c) {
+    if (c >= 'A' && c <= 'Z') {
+        return (char)(c - 'A' + 'a');
+    } else {
+        return c;
     }
 }
 
 char is_uppercase(char c) {
     return c >= 'A' && c <= 'Z';
+}
+
+int string_compare(char* str1_ptr, char* str2_ptr) {
+    char* i1 = str1_ptr;
+    char* i2 = str2_ptr;
+    char* j1 = str1_ptr;
+    char* j2 = str2_ptr;
+
+    while (to_lowercase(*i1) == to_lowercase(*i2) && *i1 != '\0' && *i2 != '\0') {
+        i1++;
+        i2++;
+    }
+
+    if (*i1 == '\0' && *i2 == '\0') {
+        while (*j1 == *j2 && j1 != '\0' && j2 != '\0') {
+            j1++;
+            j2++;
+        }
+        if (*j1 == '\0') {
+            return -1;
+        }
+        if (*j2 == '\0') {
+            return 1;
+        }
+        int u1 = is_uppercase(*j1) != 0, u2 = is_uppercase(*j2) != 0;
+        return to_lowercase(*j1) == to_lowercase(*j2) ? u1 - u2 : to_lowercase(*j1) - to_lowercase(*j2);
+    } else if (*i1 == '\0') {
+        return -1;
+    } else if (*i2 == '\0') {
+        return 1;
+    }
+
+    int u1 = is_uppercase(*str1_ptr) != 0, u2 = is_uppercase(*str2_ptr) !=0;
+    return to_lowercase(*i1) == to_lowercase(*i2) ? u1 - u2 : to_lowercase(*i1) - to_lowercase(*i2);
 }
 
 void sort_str(int fd,int reverse, int output_file, int number) {
@@ -61,31 +92,11 @@ void sort_str(int fd,int reverse, int output_file, int number) {
     }
     
     for (i = 0; i < lines - 1; i++) {
-        strcpy(word_in_lowercase_1, str[i]);
-        to_lowercase(word_in_lowercase_1);
         for (j = i + 1; j < lines; j++) {
-            strcpy(word_in_lowercase_2, str[j]);
-            to_lowercase(word_in_lowercase_2);
-            if ((n = strcmp(word_in_lowercase_1, word_in_lowercase_2)) > 0) {
-                strcpy(temp, str[i]);
-                strcpy(str[i], str[j]);
-                strcpy(str[j], temp);
-                printf(1, "--swap *%s and *%s!diff by %d\n", word_in_lowercase_1, word_in_lowercase_2, n);
-            } else {
-                printf(1, "--no swap *%s and %s!\n", str[i], str[j]);
-            }
-            if (strcmp(word_in_lowercase_1, word_in_lowercase_2) == 0) {
-                printf(1, "--elif entered\n");
-                for (k = 0; str[i][k] == '\0' || str[j][k] == '\0'; k++) {
-                    if (is_uppercase(str[i][k]) && !is_uppercase(str[j][k])) {
-                        strcpy(temp, str[j]);
-                        strcpy(str[j], str[i]);
-                        strcpy(str[i], temp);
-                        printf(1, "--%s is Uppercase\n", str[i][k]);
-                        printf(1, "--swap *%s and *%s!\n", str[i], str[j]);
-                        break;
-                    }
-                }
+            if (string_compare(words[i], words[j]) > 0) {
+                strcpy(temp, words[i]);
+                strcpy(words[i], words[j]);
+                strcpy(words[j], temp);
             }
         }
     }
