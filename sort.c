@@ -45,6 +45,40 @@ char is_uppercase(char c) {
     return c >= 'A' && c <= 'Z';
 }
 
+int string_compare(char* str1_ptr, char* str2_ptr) {
+    char* i1 = str1_ptr;
+    char* i2 = str2_ptr;
+    char* j1 = str1_ptr;
+    char* j2 = str2_ptr;
+
+    while (to_lowercase(*i1) == to_lowercase(*i2) && *i1 != '\0' && *i2 != '\0') {
+        i1++;
+        i2++;
+    }
+
+    if (*i1 == '\0' && *i2 == '\0') {
+        while (*j1 == *j2 && j1 != '\0' && j2 != '\0') {
+            j1++;
+            j2++;
+        }
+        if (*j1 == '\0') {
+            return -1;
+        }
+        if (*j2 == '\0') {
+            return 1;
+        }
+        int u1 = is_uppercase(*j1) != 0, u2 = is_uppercase(*j2) != 0;
+        return to_lowercase(*j1) == to_lowercase(*j2) ? u1 - u2 : to_lowercase(*j1) - to_lowercase(*j2);
+    } else if (*i1 == '\0') {
+        return -1;
+    } else if (*i2 == '\0') {
+        return 1;
+    }
+
+    int u1 = is_uppercase(*str1_ptr) != 0, u2 = is_uppercase(*str2_ptr) !=0;
+    return to_lowercase(*i1) == to_lowercase(*i2) ? u1 - u2 : to_lowercase(*i1) - to_lowercase(*i2);
+}
+
 void sort(int fd, char* name) {
 
     int lines = 0, i, j, n;
@@ -59,11 +93,10 @@ void sort(int fd, char* name) {
     
     for (i = 0; i < lines - 1; i++) {
         for (j = i + 1; j < lines; j++) {
-            if (strcmp(words[i], words[j]) > 0) {
+            if (string_compare(words[i], words[j]) > 0) {
                 strcpy(temp, words[i]);
                 strcpy(words[i], words[j]);
                 strcpy(words[j], temp);
-            } else if (strcmp(words[i], words[j]) == 0) {
             }
         }
     }
