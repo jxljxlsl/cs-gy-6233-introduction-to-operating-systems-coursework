@@ -107,6 +107,12 @@ void sort_numbers(int fd, int reverse, int output_file, int number) {
         lines++;
     }
 
+    printf(1, "--before\n");
+    print_all_str(str, lines);
+
+
+
+    printf(1, "--number of lines: %d\n", lines);
     for(i=0; i<lines; i++) {
         int temp=0;
         int flag=-1;
@@ -122,8 +128,13 @@ void sort_numbers(int fd, int reverse, int output_file, int number) {
         temp=temp*flag;
         output[index++]=temp;
     }
+    printf(1,"--converted to numbers\n");
+    for(i=0; i<lines; i++) {
+        printf(1,"%d\n", output[i]);
+    }
+    printf(1, "----------result\n");
     for(i=0; i<lines -1; i++) {
-        for(j=0; j<lines-i; j++) {
+        for(j=0; j<lines - 1 - i; j++) {
             if(output[j]>output[j+1] && status==0) {
                 int temp=output[j];
                 output[j]=output[j+1];
@@ -136,6 +147,7 @@ void sort_numbers(int fd, int reverse, int output_file, int number) {
             }
         }
     }
+
     for(i=0; i<lines; i++) {
         printf(1,"%d\n", output[i]);
     }
@@ -147,7 +159,7 @@ int main(int argc, char * argv[]) {
     int reverse, output_file, number=0;
 
     if(argc <= 1) {
-        sort(0, 0, 0, 0);
+        //sort_numbers(0, 0, 0, 0);
         exit();
     }
     for(i=1; i<argc; i++) {
@@ -164,7 +176,11 @@ int main(int argc, char * argv[]) {
             }
         }
     }
-    sort(fd, reverse, output_file, number);
+    if (number == 1) {
+        sort_numbers(fd, reverse, output_file, number);
+    } else {
+        sort_str(fd, reverse, output_file, number);
+    }
     close(fd);
     exit();
 }
