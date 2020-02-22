@@ -6,10 +6,10 @@
 #define MAX_WORD_LENGTH 1024
 #define MAX_LINES 256
 
-char buf[MAX_WORD_LENGTH + 1];
-char str[MAX_LINES][MAX_WORD_LENGTH + 1];
+char buf[MAX_WORD_LENGTH];
+char str[MAX_LINES][MAX_WORD_LENGTH];
 
-void print_all_str(char str[MAX_LINES][MAX_WORD_LENGTH + 1], int lines) {
+void print_all_str(char str[MAX_LINES][MAX_WORD_LENGTH], int lines) {
     int i;
     for (i = 0; i < lines; i++) {
         printf(1, "%s\n", str[i]);
@@ -45,15 +45,19 @@ char is_uppercase(char c) {
     return c >= 'A' && c <= 'Z';
 }
 
-void write_into_file(char* file_name, int lines) {
-    int fd = open(file_name, O_CREATE | O_RDWR);
+void write_str_into_file(int fd, char str[MAX_LINES][MAX_WORD_LENGTH], int lines) {
+    // int fd1 = open(fd, O_CREATE | O_RDWR);
+    printf(1, "fd:%d\n", fd);
     int i;
+    int success;
 
     for (i = 0; i < lines; i++) {
         str[i][strlen(str[i])] = '\n';
-        write(fd, str[i], strlen(str[i]));
+        printf(1, "output:%s", str[i]);
+        success=write(fd, str[i], strlen(str[i]));
+        printf(1, "this time: %d\n", success);
     }
-    close(fd);
+    // close(fd);
     printf(1, "--Written!");
 }
 
@@ -91,16 +95,17 @@ int string_compare(char* str1_ptr, char* str2_ptr) {
     return to_lowercase(*i1) == to_lowercase(*i2) ? u1 - u2 : to_lowercase(*i1) - to_lowercase(*i2);
 }
 
-void sort_str(int fd,int reverse, int output_file, int number, char* file_name) {
+void sort_str(int fd,int reverse, int output_file, int number, int fd1) {
 
     int lines = 0, i, j, n;
-    char temp[MAX_WORD_LENGTH + 1];
+    char temp[MAX_WORD_LENGTH];
 
     while ((n = get_line(fd, buf)) > 0) {
         strcpy(str[lines], buf);
         str[lines][n - 1] = '\0';
         lines++;
     }
+
     
     for (i = 0; i < lines - 1; i++) {
         for (j = i + 1; j < lines; j++) {
@@ -123,11 +128,11 @@ void sort_str(int fd,int reverse, int output_file, int number, char* file_name) 
     if (output_file == 0) {
         print_all_str(str, lines);
     } else {
-        write_into_file(file_name, lines);
+        write_str_into_file(fd1, str, lines);
     }
 }
 
-void sort_numbers(int fd, int reverse, int output_file, int number, char* fi) {
+void sort_numbers(int fd, int reverse, int output_file, int number, int fd1) {
     int status=reverse;
     int output[MAX_LINES];
     int index=0;
@@ -185,39 +190,60 @@ void sort_numbers(int fd, int reverse, int output_file, int number, char* fi) {
             printf(1,"%d\n", output[i]);
         }
     } else {
-        //write_into_file(output, lines);
+        // write_number_into_file(fd1, output, lines);
     }
 }  
+
+void sort(int fd, int reverse, int output_file, int number, int fd1) {
+    if(number==0) {
+        sort_str(fd, reverse, output_file, number, fd1);
+    } else {
+        sort_numbers(fd, reverse, output_file, number, fd1);
+    }
+}
 
 int main(int argc, char * argv[]) { 
 
     int fd, i;
     int reverse, output_file, number=0;
+    int two_files=0;
+    int fd1;
 
     if(argc <= 1) {
-        sort_numbers(0, 0, 0, 0, 0);
+        sort(0, 0, 0, 0, 0);
         exit();
     }
     for(i=1; i<argc; i++) {
         if(strcmp(argv[i], "-r")==0) {
             reverse=1;
+            printf(1, "reverse: %d\n", reverse);
         } else if(strcmp(argv[i], "-o")==0) {
             output_file=1;
+            printf(1, "output_file: %d\n", output_file);
         } else if(strcmp(argv[i], "-n")==0) {
             number=1;
+            printf(1, "number: %d\n", number);
         } else {
-            if((fd = open(argv[i], 0)) < 0){
+            if(two_files==0 && (fd = open(argv[i], 0)) < 0){
                 printf(1, "sort: cannot open %s\n", argv[i]);
+                printf(1, "%d, %d\n", two_files, fd);
+                exit();
+            } 
+            if(two_files==0 && (fd >= 0)) {
+                two_files=1;
+                continue;
+            } 
+
+            if(two_files == 1 && (fd1=open(argv[i], O_CREATE | O_RDWR)) < 0) {
+                printf(1, "%d, %d\n", two_files, fd1);
+                printf(1, "sort: cannot open output file %s\n", argv[i]);
                 exit();
             }
         }
     }
-    if (number == 1) {
-        sort_numbers(fd, reverse, output_file, number, argv[i]);
-    } else {
-        sort_str(fd, reverse, output_file, number, argv[i]);
-    }
-
+    // fd==0: open file successfully; <0:fail; >0 initialize
+    sort(fd, reverse, output_file, number, fd1);
     close(fd);
+    close(fd1);
     exit();
 }
