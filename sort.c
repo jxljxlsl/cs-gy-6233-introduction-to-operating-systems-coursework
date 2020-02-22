@@ -1,6 +1,7 @@
 #include "types.h"
 #include "stat.h"
 #include "user.h"
+#include "fcntl.h"
 
 #define MAX_WORD_LENGTH 1024
 #define MAX_LINES 256
@@ -44,6 +45,18 @@ char is_uppercase(char c) {
     return c >= 'A' && c <= 'Z';
 }
 
+void write_into_file(char* file_name, int lines) {
+    int fd = open(file_name, O_CREATE, O_RDWR);
+    int i;
+
+    for (i = 0; i < lines; i++) {
+        str[i][strlen(str[i])] = '\n';
+        write(fd, str[i], strlen(str[i]));
+    }
+    close(fd);
+    printf(1, "--Written!");
+}
+
 int string_compare(char* str1_ptr, char* str2_ptr) {
     char* i1 = str1_ptr;
     char* i2 = str2_ptr;
@@ -78,7 +91,7 @@ int string_compare(char* str1_ptr, char* str2_ptr) {
     return to_lowercase(*i1) == to_lowercase(*i2) ? u1 - u2 : to_lowercase(*i1) - to_lowercase(*i2);
 }
 
-void sort_str(int fd,int reverse, int output_file, int number) {
+void sort_str(int fd,int reverse, int output_file, int number, char* file_name) {
 
     int lines = 0, i, j, n;
     char temp[MAX_WORD_LENGTH + 1];
@@ -107,11 +120,14 @@ void sort_str(int fd,int reverse, int output_file, int number) {
         }
     }
     
-    //--Print all str for testing
-    print_all_str(str, lines);
+    if (output_file == 0) {
+        print_all_str(str, lines);
+    } else {
+        write_into_file(file_name, lines);
+    }
 }
 
-void sort_numbers(int fd, int reverse, int output_file, int number) {
+void sort_numbers(int fd, int reverse, int output_file, int number, char* fi) {
     int status=reverse;
     int output[MAX_LINES];
     int index=0;
@@ -164,9 +180,12 @@ void sort_numbers(int fd, int reverse, int output_file, int number) {
             }
         }
     }
-
-    for(i=0; i<lines; i++) {
-        printf(1,"%d\n", output[i]);
+    if (output_file == 0) {
+        for(i=0; i<lines; i++) {
+            printf(1,"%d\n", output[i]);
+        }
+    } else {
+        write_into_file(output, lines);
     }
 }  
 
@@ -176,7 +195,7 @@ int main(int argc, char * argv[]) {
     int reverse, output_file, number=0;
 
     if(argc <= 1) {
-        //sort_numbers(0, 0, 0, 0);
+        sort_numbers(0, 0, 0, 0);
         exit();
     }
     for(i=1; i<argc; i++) {
@@ -198,6 +217,7 @@ int main(int argc, char * argv[]) {
     } else {
         sort_str(fd, reverse, output_file, number);
     }
+
     close(fd);
     exit();
 }
