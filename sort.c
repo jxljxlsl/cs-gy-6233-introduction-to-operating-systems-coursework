@@ -213,9 +213,9 @@ int main(int argc, char * argv[]) {
         }
     }
     if (number == 1) {
-        sort_numbers(fd, reverse, output_file, number);
+        sort_numbers(fd, reverse, output_file, number, argv[i]);
     } else {
-        sort_str(fd, reverse, output_file, number);
+        sort_str(fd, reverse, output_file, number, argv[i]);
     }
 
     close(fd);
