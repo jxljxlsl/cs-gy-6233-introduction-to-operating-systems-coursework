@@ -46,7 +46,7 @@ char is_uppercase(char c) {
 }
 
 void write_into_file(char* file_name, int lines) {
-    int fd = open(file_name, O_CREATE, O_RDWR);
+    int fd = open(file_name, O_CREATE | O_RDWR);
     int i;
 
     for (i = 0; i < lines; i++) {
@@ -185,7 +185,7 @@ void sort_numbers(int fd, int reverse, int output_file, int number, char* fi) {
             printf(1,"%d\n", output[i]);
         }
     } else {
-        write_into_file(output, lines);
+        //write_into_file(output, lines);
     }
 }  
 
@@ -195,7 +195,7 @@ int main(int argc, char * argv[]) {
     int reverse, output_file, number=0;
 
     if(argc <= 1) {
-        sort_numbers(0, 0, 0, 0);
+        sort_numbers(0, 0, 0, 0, 0);
         exit();
     }
     for(i=1; i<argc; i++) {
