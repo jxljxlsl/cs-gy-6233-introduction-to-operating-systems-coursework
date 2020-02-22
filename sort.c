@@ -91,10 +91,18 @@ void sort_str(int fd,int reverse, int output_file, int number) {
     
     for (i = 0; i < lines - 1; i++) {
         for (j = i + 1; j < lines; j++) {
-            if (string_compare(str[i], str[j]) > 0) {
-                strcpy(temp, str[i]);
-                strcpy(str[i], str[j]);
-                strcpy(str[j], temp);
+            if (reverse == 0) {
+                if (string_compare(str[i], str[j]) > 0) {
+                    strcpy(temp, str[i]);
+                    strcpy(str[i], str[j]);
+                    strcpy(str[j], temp);
+                }
+            } else {
+                if (string_compare(str[i], str[j]) < 0) {
+                    strcpy(temp, str[i]);
+                    strcpy(str[i], str[j]);
+                    strcpy(str[j], temp);
+                }
             }
         }
     }
