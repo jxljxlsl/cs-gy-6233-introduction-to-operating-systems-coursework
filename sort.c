@@ -80,10 +80,8 @@ int string_compare(char* str1_ptr, char* str2_ptr) {
 
 void sort_str(int fd,int reverse, int output_file, int number) {
 
-    int lines = 0, i, j, k, n;
+    int lines = 0, i, j, n;
     char temp[MAX_WORD_LENGTH + 1];
-    char word_in_lowercase_1[MAX_WORD_LENGTH + 1];
-    char word_in_lowercase_2[MAX_WORD_LENGTH + 1];
 
     while ((n = get_line(fd, buf)) > 0) {
         strcpy(str[lines], buf);
@@ -93,10 +91,10 @@ void sort_str(int fd,int reverse, int output_file, int number) {
     
     for (i = 0; i < lines - 1; i++) {
         for (j = i + 1; j < lines; j++) {
-            if (string_compare(words[i], words[j]) > 0) {
-                strcpy(temp, words[i]);
-                strcpy(words[i], words[j]);
-                strcpy(words[j], temp);
+            if (string_compare(str[i], str[j]) > 0) {
+                strcpy(temp, str[i]);
+                strcpy(str[i], str[j]);
+                strcpy(str[j], temp);
             }
         }
     }
