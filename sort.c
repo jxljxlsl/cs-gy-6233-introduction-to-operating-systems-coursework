@@ -16,7 +16,7 @@ void print_all_words(char words[MAX_LINES][MAX_WORD_LENGTH + 1], int lines) {
     }
 }
 
-int getLine(int fd, char* ptr) {
+int get_line(int fd, char* ptr) {
     char c;
     int count = 0;
     if ( fd < 0) {
@@ -33,35 +33,43 @@ int getLine(int fd, char* ptr) {
     return count;
 }
 
-
-void sort(int fd, char*name) {
-
-    int i = 0, n;
-   // char words[MAX_LINES][MAX_WORD_LENGTH + 1];
-   // int line = 0;
-   // char word[MAX_WORD_LENGTH + 1];
-
-    while ((n = getLine(fd, buf)) > 0) {
-        strcpy(words[i], buf);
-        words[i][n - 1] = '\0';
-        i++;
+char to_lowercase(char c) {
+    if (c >= 'A' && c <= 'Z') {
+        return (char)(c - 'A' + 'a');
+    } else {
+        return c;
     }
-    //--Read all words into a 2d char array
-    /*while ((n = read(fd, buf, sizeof(buf))) > 0) {
-        for (i = 0; i < n; i++) {
-            if (buf[i] == '\n') {
-	        words[line][j] = '\0';
-                line++;
-                j = 0;
-	    } else {
-	        words[line][j] = buf[i];
-           	j++;
+}
+
+char is_uppercase(char c) {
+    return c >= 'A' && c <= 'Z';
+}
+
+void sort(int fd, char* name) {
+
+    int lines = 0, i, j, n;
+    char temp[MAX_WORD_LENGTH + 1];
+
+    while ((n = get_line(fd, buf)) > 0) {
+        strcpy(words[lines], buf);
+        words[lines][n - 1] = '\0';
+        lines++;
+    }
+    
+    
+    for (i = 0; i < lines - 1; i++) {
+        for (j = i + 1; j < lines; j++) {
+            if (strcmp(words[i], words[j]) > 0) {
+                strcpy(temp, words[i]);
+                strcpy(words[i], words[j]);
+                strcpy(words[j], temp);
+            } else if (strcmp(words[i], words[j]) == 0) {
             }
         }
-    }*/
+    }
     
     //--Print all words for testing
-    print_all_words(words, i);
+    print_all_words(words, lines);
 }
 
 
