@@ -63,24 +63,49 @@ void write_str_into_file(int fd_out) {
     printf(1, "--Written!");
 }
 
-void write_number_into_file(int fd_out, int* numbers[]) {
-    int i, j, digit = 0;
-    int number = numbers[i];
-    int divider;
+void write_number_into_file(int fd_out, int numbers[]) {
+    printf(1, "--fd_out in write_number_into_file:%d\n", fd_out);
+    int i = 0, j, neg;
     char temp[MAX_WORD_LENGTH];
-    char* str;
+    char s[MAX_WORD_LENGTH];
+    int success;
+
     for (i = 0; i < lines; i++) {
+        int number = numbers[i];
+        int digit = 0;
+        if (number < 0) {
+            neg = 1;
+            number = number * -1;
+        } else {
+            neg = 0;
+        }
+        if (number == 0) {
+            s[0] = '0';
+            digit = 1;
+        }
         while (number != 0) {
-            temp[digit] = (number % 10) + '0';
+            temp[digit] =(char)((number % 10) + '0');
             number = number / 10;
             digit++;
         }
-        // temp[digit] = '\0';
-        for (j = 0; j < i; j++) {
-            str[j] = temp[i - j];
+        
+        if (neg == 1) {
+            s[0] = '-';
+            digit++;
+            for (j = 1; j < digit; j++) {
+                s[j] = temp[digit - 1 - j];
+            }
+        } else  {
+            for (j = 0; j < digit; j++) {
+                s[j] = temp[digit- 1 - j];
+            }
         }
-        str[j] = '\0';
-        write(fd_out, str, digit);
+        s[digit] = '\n';
+        s[digit + 1] = '\0';
+    
+        printf(1, "--output:%s", s);
+        success = write(fd_out, s, strlen(s));
+        printf(1, "--this time: %d\n", success);
     }
 }
 
@@ -219,6 +244,9 @@ void sort_numbers(int fd_in, int flag_r, int flag_o, int flag_n, int fd_out) {
         for(i=0; i<lines; i++) {
             printf(1,"%d\n", output[i]);
         }
+    } else {
+        printf(1, "--fd_out in sort_numbers = %d\n", fd_out);
+        write_number_into_file(fd_out, output);
     }
 }  
 
