@@ -51,22 +51,17 @@ char is_uppercase(char c) {
 
 void write_str_into_file(int fd_out) {
    
-    printf(1, "--fd_out in write_str_into_file:%d\n", fd_out);
     int i;
     int success;
 
     for (i = 0; i < lines; i++) {
         str[i][strlen(str[i])] = '\n';
-        printf(1, "--output:%s", str[i]);
         success=write(fd_out, str[i], strlen(str[i]));
-        printf(1, "--this time: %d\n", success);
     }
-
-    printf(1, "--Written!");
 }
 
 void write_number_into_file(int fd_out, int numbers[]) {
-    printf(1, "--fd_out in write_number_into_file:%d\n", fd_out);
+
     int i = 0, j, neg;
 
     int success;
@@ -104,9 +99,7 @@ void write_number_into_file(int fd_out, int numbers[]) {
         s[digit] = '\n';
         s[digit + 1] = '\0';
     
-        printf(1, "--output:%s", s);
         success = write(fd_out, s, strlen(s));
-        printf(1, "--this time: %d\n", success);
     }
 }
 
@@ -181,7 +174,6 @@ void sort_str(int fd_in,int flag_r, int flag_o, int flag_n, int fd_out) {
     if (flag_o == 0) {
         print_all_str();
     } else {
-        printf(1, "--fd_out in sort_str = %d\n", fd_out);
         write_str_into_file(fd_out);
     }
 }
@@ -199,12 +191,6 @@ void sort_numbers(int fd_in, int flag_r, int flag_o, int flag_n, int fd_out) {
         lines++;
     }
 
-    printf(1, "--before\n");
-    print_all_str();
-
-
-
-    printf(1, "--number of lines: %d\n", lines);
     for(i=0; i<lines; i++) {
         int temp=0;
         int flag=-1;
@@ -220,11 +206,7 @@ void sort_numbers(int fd_in, int flag_r, int flag_o, int flag_n, int fd_out) {
         temp=temp*flag;
         output[index++]=temp;
     }
-    printf(1,"--converted to numbers\n");
-    for(i=0; i<lines; i++) {
-        printf(1,"%d\n", output[i]);
-    }
-    printf(1, "----------result\n");
+
     for(i=0; i<lines -1; i++) {
         for(j=0; j<lines - 1 - i; j++) {
             if(output[j]>output[j+1] && status==0) {
@@ -245,13 +227,12 @@ void sort_numbers(int fd_in, int flag_r, int flag_o, int flag_n, int fd_out) {
             printf(1,"%d\n", output[i]);
         }
     } else {
-        printf(1, "--fd_out in sort_numbers = %d\n", fd_out);
         write_number_into_file(fd_out, output);
     }
 }  
 
 void sort(int fd_in, int flag_r, int flag_o, int flag_n, int fd_out) {
-    printf(1, "--fd_out in sort = %d\n", fd_out);
+
     if(flag_n == 0) {
         sort_str(fd_in, flag_r, flag_o, flag_n, fd_out);
     } else {
@@ -275,9 +256,7 @@ int main(int argc, char * argv[]) {
         }
         if (strcmp(argv[i], "-o") == 0) {
             // immediately read the output file name after -o
-            printf(1, "--flag_o = 1!\n");
             fd_out = open(argv[++i], O_CREATE | O_RDWR);
-            printf(1, "--fd_out in main = %d\n", fd_out);
             if (fd_out < 0) {
                 printf(1, "sort: cannot create or modify output file <%s>\n", argv[i]);
                 exit();
