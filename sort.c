@@ -46,9 +46,9 @@ char is_uppercase(char c) {
     return c >= 'A' && c <= 'Z';
 }
 
-void write_str_into_file(int fd_out, char str[MAX_LINES][MAX_WORD_LENGTH], int lines) {
+void write_str_into_file(int fd_out, int lines) {
     // int fd1 = open(fd, O_CREATE | O_RDWR);
-    printf(1, "--fd_out:%d\n", fd_out);
+    printf(1, "--fd_out in write_str_into_file:%d\n", fd_out);
     int i;
     int success;
 
@@ -132,11 +132,12 @@ void sort_str(int fd_in,int flag_r, int flag_o, int flag_n, int fd_out) {
     if (flag_o == 0) {
         print_all_str(str, lines);
     } else {
-        write_str_into_file(fd_out, str, lines);
+        printf(1, "--fd_out in sort_str = %d\n", fd_out);
+        write_str_into_file(fd_out, lines);
     }
 }
 
-void sort_numbers(int fd, int flag_r, int flag_o, int flag_n, int fd1) {
+void sort_numbers(int fd, int flag_r, int flag_o, int flag_n, int fd_out) {
     int status=flag_r;
     int output[MAX_LINES];
     int index=0;
@@ -198,6 +199,7 @@ void sort_numbers(int fd, int flag_r, int flag_o, int flag_n, int fd1) {
 }  
 
 void sort(int fd_in, int flag_r, int flag_o, int flag_n, int fd_out) {
+    printf(1, "--fd_out in sort = %d\n", fd_out);
     if(flag_n == 0) {
         sort_str(fd_in, flag_r, flag_o, flag_n, fd_out);
     } else {
@@ -228,8 +230,8 @@ int main(int argc, char * argv[]) {
         if (strcmp(argv[i], "-o") == 0) {
             // immediately read the output file name after -o
             printf(1, "--flag_o = 1!\n");
-            int fd_out = open(argv[++i], O_CREATE | O_RDWR);
-            printf(1, "--fd_out = %d\n", fd_out);
+            fd_out = open(argv[++i], O_CREATE | O_RDWR);
+            printf(1, "--fd_out in main = %d\n", fd_out);
             if (fd_out < 0) {
                 printf(1, "sort: cannot create or modify output file <%s>\n", argv[i]);
                 exit();
