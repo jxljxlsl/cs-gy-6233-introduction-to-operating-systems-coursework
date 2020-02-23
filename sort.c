@@ -8,6 +8,8 @@
 
 char buf[MAX_WORD_LENGTH];
 char str[MAX_LINES][MAX_WORD_LENGTH];
+char temp[MAX_WORD_LENGTH];
+char s[MAX_WORD_LENGTH];
 int lines = 0;
 
 void print_all_str() {
@@ -66,8 +68,7 @@ void write_str_into_file(int fd_out) {
 void write_number_into_file(int fd_out, int numbers[]) {
     printf(1, "--fd_out in write_number_into_file:%d\n", fd_out);
     int i = 0, j, neg;
-    char temp[MAX_WORD_LENGTH];
-    char s[MAX_WORD_LENGTH];
+
     int success;
 
     for (i = 0; i < lines; i++) {
@@ -149,7 +150,6 @@ int string_compare(char* str1_ptr, char* str2_ptr) {
 void sort_str(int fd_in,int flag_r, int flag_o, int flag_n, int fd_out) {
 
     int i, j, n;
-    char temp[MAX_WORD_LENGTH];
     lines = 0;
 
     while ((n = get_line(fd_in, buf)) > 0) {
