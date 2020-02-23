@@ -8,8 +8,9 @@
 
 char buf[MAX_WORD_LENGTH];
 char str[MAX_LINES][MAX_WORD_LENGTH];
+int lines = 0;
 
-void print_all_str(char str[MAX_LINES][MAX_WORD_LENGTH], int lines) {
+void print_all_str() {
     int i;
     for (i = 0; i < lines; i++) {
         printf(1, "%s\n", str[i]);
@@ -46,7 +47,7 @@ char is_uppercase(char c) {
     return c >= 'A' && c <= 'Z';
 }
 
-void write_str_into_file(int fd_out, int lines) {
+void write_str_into_file(int fd_out) {
    
     printf(1, "--fd_out in write_str_into_file:%d\n", fd_out);
     int i;
@@ -58,9 +59,31 @@ void write_str_into_file(int fd_out, int lines) {
         success=write(fd_out, str[i], strlen(str[i]));
         printf(1, "--this time: %d\n", success);
     }
-    // close(fd);
-    printf(1, "--Written!\n");
+
+    printf(1, "--Written!");
 }
+
+void write_number_into_file(int fd_out, int* numbers[]) {
+    int i, j, digit = 0;
+    int number = numbers[i];
+    int divider;
+    char temp[MAX_WORD_LENGTH];
+    char* str;
+    for (i = 0; i < lines; i++) {
+        while (number != 0) {
+            temp[digit] = (number % 10) + '0';
+            number = number / 10;
+            digit++;
+        }
+        // temp[digit] = '\0';
+        for (j = 0; j < i; j++) {
+            str[j] = temp[i - j];
+        }
+        str[j] = '\0';
+        write(fd_out, str, digit);
+    }
+}
+
 
 int string_compare(char* str1_ptr, char* str2_ptr) {
     
@@ -100,8 +123,9 @@ int string_compare(char* str1_ptr, char* str2_ptr) {
 
 void sort_str(int fd_in,int flag_r, int flag_o, int flag_n, int fd_out) {
 
-    int lines = 0, i, j, n;
+    int i, j, n;
     char temp[MAX_WORD_LENGTH];
+    lines = 0;
 
     while ((n = get_line(fd_in, buf)) > 0) {
         strcpy(str[lines], buf);
@@ -130,28 +154,28 @@ void sort_str(int fd_in,int flag_r, int flag_o, int flag_n, int fd_out) {
     
     // printing or writing into file based on flag_o for -o
     if (flag_o == 0) {
-        print_all_str(str, lines);
+        print_all_str();
     } else {
         printf(1, "--fd_out in sort_str = %d\n", fd_out);
-        write_str_into_file(fd_out, lines);
+        write_str_into_file(fd_out);
     }
 }
 
-void sort_numbers(int fd, int flag_r, int flag_o, int flag_n, int fd_out) {
+void sort_numbers(int fd_in, int flag_r, int flag_o, int flag_n, int fd_out) {
     int status=flag_r;
     int output[MAX_LINES];
     int index=0;
     int i,j,n;
-    int lines = 0;
+    lines = 0;
 
-    while ((n = get_line(fd, buf)) > 0) {
+    while ((n = get_line(fd_in, buf)) > 0) {
         strcpy(str[lines], buf);
         str[lines][n - 1] = '\0';
         lines++;
     }
 
     printf(1, "--before\n");
-    print_all_str(str, lines);
+    print_all_str();
 
 
 
@@ -211,12 +235,6 @@ int main(int argc, char * argv[]) {
 
     int fd_in = -1, fd_out = -1, i;
     int flag_r = 0, flag_o = 0 , flag_n = 0;
-
-//    if(argc <= 1) {
-        // no argument
-  //      sort(0, flag_r, flag_o, flag_n, fd_out);
-    //    exit();
-   // }
 
     for( i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-r") == 0) {
