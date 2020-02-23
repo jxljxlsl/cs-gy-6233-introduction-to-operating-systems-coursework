@@ -47,7 +47,7 @@ char is_uppercase(char c) {
 }
 
 void write_str_into_file(int fd_out, int lines) {
-    // int fd1 = open(fd, O_CREATE | O_RDWR);
+   
     printf(1, "--fd_out in write_str_into_file:%d\n", fd_out);
     int i;
     int success;
@@ -59,7 +59,7 @@ void write_str_into_file(int fd_out, int lines) {
         printf(1, "--this time: %d\n", success);
     }
     // close(fd);
-    printf(1, "--Written!");
+    printf(1, "--Written!\n");
 }
 
 int string_compare(char* str1_ptr, char* str2_ptr) {
@@ -212,11 +212,11 @@ int main(int argc, char * argv[]) {
     int fd_in = -1, fd_out = -1, i;
     int flag_r = 0, flag_o = 0 , flag_n = 0;
 
-    if(argc <= 1) {
+//    if(argc <= 1) {
         // no argument
-        sort(0, 0, 0, 0, 0);
-        exit();
-    }
+  //      sort(0, flag_r, flag_o, flag_n, fd_out);
+    //    exit();
+   // }
 
     for( i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-r") == 0) {
@@ -245,6 +245,9 @@ int main(int argc, char * argv[]) {
         }
     }
 
+    if (fd_in == -1) {
+        fd_in = 0;
+    }
     sort(fd_in, flag_r, flag_o, flag_n, fd_out);
 
     close(fd_in);
