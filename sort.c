@@ -52,19 +52,16 @@ char is_uppercase(char c) {
 void write_str_into_file(int fd_out) {
    
     int i;
-    int success;
 
     for (i = 0; i < lines; i++) {
         str[i][strlen(str[i])] = '\n';
-        success=write(fd_out, str[i], strlen(str[i]));
+        write(fd_out, str[i], strlen(str[i]));
     }
 }
 
 void write_number_into_file(int fd_out, int numbers[]) {
 
     int i = 0, j, neg;
-
-    int success;
 
     for (i = 0; i < lines; i++) {
         int number = numbers[i];
@@ -99,10 +96,9 @@ void write_number_into_file(int fd_out, int numbers[]) {
         s[digit] = '\n';
         s[digit + 1] = '\0';
     
-        success = write(fd_out, s, strlen(s));
+        write(fd_out, s, strlen(s));
     }
 }
-
 
 int string_compare(char* str1_ptr, char* str2_ptr) {
     
