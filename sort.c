@@ -6,10 +6,10 @@
 #define MAX_WORD_LENGTH 1024
 #define MAX_LINES 256
 
-char buf[MAX_WORD_LENGTH];
+char buf[MAX_WORD_LENGTH] = {0};
 char str[MAX_LINES][MAX_WORD_LENGTH];
-char temp[MAX_WORD_LENGTH];
-char s[MAX_WORD_LENGTH];
+char temp[MAX_WORD_LENGTH] = {0};
+char s[MAX_WORD_LENGTH] = {0};
 int lines = 0;
 
 void print_all_str() {
