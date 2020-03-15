@@ -17,3 +17,4 @@ mkfs
 .vscode
 .gdb_history
 .DS_Store
+doggerel.txt
