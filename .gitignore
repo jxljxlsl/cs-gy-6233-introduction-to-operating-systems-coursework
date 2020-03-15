@@ -16,3 +16,4 @@ mkfs
 .gdbinit
 .vscode
 .gdb_history
+.DS_Store
