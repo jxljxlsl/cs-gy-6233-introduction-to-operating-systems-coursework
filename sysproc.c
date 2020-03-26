@@ -89,3 +89,26 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int sys_date(struct rtcdate *r) {
+  if (argptr(0, (void *)&r, sizeof(*r)) < 0)
+    return -1;
+  cmostime(r);
+  int  calender [] = {31,28,31,30,31,30,31,31,30,31,30,31};
+	r -> hour -= 4;
+	if(r->hour < 0){
+		r->hour += 24;
+		r->day -= 1;
+		if(r->day == 0){
+			r->month -= 1;
+			r->day = calender[r->month + 1];
+		}
+	}
+  return 0;
+}
+
+
+
+
+
+

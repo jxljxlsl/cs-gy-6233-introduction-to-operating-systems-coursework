@@ -190,6 +190,7 @@ UPROGS=\
 	_example\
 	_sort\
 	_numbers\
+        _date\
 
 fs.img: mkfs README.md n.txt big_test_file.txt long_test_file.txt test_file.txt $(UPROGS)
 	./mkfs fs.img README.md n.txt big_test_file.txt long_test_file.txt test_file.txt $(UPROGS)
