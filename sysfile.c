@@ -79,7 +79,7 @@ int sys_dup2(void) {
         return newfd;
     }
     if (newfile->ref > 0) {
-        fileclose(oldfile);
+        fileclose(newfile);
     }
     if (proc->ofile[newfd] == 0) {
         proc->ofile[newfd] = oldfile;
