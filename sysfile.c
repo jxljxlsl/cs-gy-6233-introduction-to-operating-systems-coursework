@@ -63,6 +63,32 @@ sys_dup(void)
   return fd;
 }
 
+int sys_dup2(void) {
+    struct file *oldfile, *newfile;
+    int oldfd, newfd;
+    if (argfd(0, &oldfd, &oldfile) < 0) {
+        return -1;
+    }
+    if (argfd(1, &newfd, &newfile) < 0) {
+        return -1;
+    }
+    if (argint(1, &newfd) < 0) {
+        return -1;
+    }
+    if (oldfile == newfile) {
+        return newfd;
+    }
+    if (newfile->ref > 0) {
+        fileclose(oldfile);
+    }
+    if (proc->ofile[newfd] == 0) {
+        proc->ofile[newfd] = oldfile;
+        filedup(oldfile);
+    }
+
+    return newfd;
+}
+
 int
 sys_read(void)
 {
