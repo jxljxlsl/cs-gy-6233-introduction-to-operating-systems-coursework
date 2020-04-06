@@ -85,7 +85,8 @@ int sys_dup2(void) {
         proc->ofile[newfd] = oldfile;
         filedup(oldfile);
     }
-
+    proc->ofile[newfd] = oldfile;
+    filedup(oldfile);
     return newfd;
 }
 

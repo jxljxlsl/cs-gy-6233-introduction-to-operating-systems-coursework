@@ -127,7 +127,7 @@ static int (*syscalls[])(void) = {
 [SYS_dup2]    sys_dup2,
 };
 
-char* syscall_name[22] =
+char* syscall_name[24] =
 {
         [SYS_fork]    "fork",
         [SYS_exit]    "exit",
@@ -150,6 +150,7 @@ char* syscall_name[22] =
         [SYS_link]    "link",
         [SYS_mkdir]   "mkdir",
         [SYS_close]   "close",
+        [SYS_dup2]    "dup2",
 };
 
 void
