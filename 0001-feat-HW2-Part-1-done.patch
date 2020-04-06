@@ -1,0 +1,167 @@
+From c906ecbe8bb5dc7f6a04cd50db003585c48f5103 Mon Sep 17 00:00:00 2001
+From: Zhuo Liu <vin_lz@outlook.com>
+Date: Sun, 15 Mar 2020 00:43:56 -0400
+Subject: [PATCH 1/6] feat: HW2 Part 1 done
+
+---
+ .gitignore |   1 +
+ shell      | Bin 0 -> 18376 bytes
+ shell.c    |  34 +++++++++++++++++++++++++++++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
+ create mode 100755 shell
+
+diff --git a/.gitignore b/.gitignore
+index b7905a1..ad459a4 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -17,3 +17,4 @@ mkfs
+ .vscode
+ .gdb_history
+ .DS_Store
++doggerel.txt
+diff --git a/shell b/shell
+new file mode 100755
+index 0000000000000000000000000000000000000000..2062eac78addbc950f87a3c0eb0cf3603b74659b
+GIT binary patch
+literal 18376
+zcmeHPe{fXCecvY_5ybd}35iqN;gUcKc7i1^gt!Dtwx09y<6;@3m^yJD$LVAVq`S-A
+z2}>>KD!Egm$5|dtVy8HhNi+$6kks{1mwG%*E1igogzFhA4eh9724ALjy62KqZe2!o
+zDeC95Z{Pi*p6MU`qtkgidb{7x?svcY-S6&x_r0fm_sToJzWQDvjAcR$HwYn`aGh8o
+z#E1xj65>O+EL^tT(e_#MA#=}t%&iSZE&Oj0<;;W8w)dL*_SUkf`oY>f-MoM*<%=A)
+zosJHsE4=mc66gTs-MQN3Azof#Cm61Vww+2397vV3>gE0P7FXV&=J2prp;60wkIr!A
+z**(#|L^O%KdU+c@?8=+h{KT|-Ib5S(B$ZC~#vaiO_42N0dC%%{;_6T%8wIvK5PP&Y
+z)@Ap`y5kDhj>j|WUHv%b48-*^+!8nDxE{l0+wE<8+w6Pp`_cpM=muRmYC@3}SOrcn
+z1k5*eajckS+mFPnhV@<L1;MLA(5<hLp#9(P0i@JxCxp9tRTVVX=>@DponF+B!M6Lt
+zc50~qK)laRq?7L|Z$fb+f;_J-v#_?rjU;ri?XGY-?4fJ*o6!2*pjn8k<yC6Blx-hK
+zRc7zC@(NmBS5?L8^+5Yqhst{Y;^)5f1+)Eg?q~|pT4y(4hFNwHfpV&4eH8u#O{;p1
+zNE%xe$s84|Rv|W_LZS^*11aYi?R4^PAwGdLcrW}A^4|x#0~Z5%c+oZ->uS3K)`W!V
+z%Bjf&xE@y!*LApVA4nx{@9RBqd)H8(XP=vpPr29a|N9*udi_&({OPTQC%^D_9jCS;
+zFNg~&2@zPOF4FGU+|Y0<=q8rwunGOAoWfc!$4%MpPFyTwUmy`K&Zy`DeI6J}rK9~@
+z?%o2udJiZj@o^-SKYq8X$7YRbFF*Je@Gan5z_);J0p9|?1$+zm7WltvflkYL!}`Xh
+zap-3`nMEs`Srma0K18%E$$Rk7ZspCze53PH_RXLZdfDlm4df1@w8ReO&6l%smt(#d
+z$URw;x7#rbf!uIS-Vw+Ai$LzzUY?a-(G;Ngoz~d)20R9|oEv><bWZ*w?#QQ>5FGOb
+zc?N(ASdLjlTC}o*jTQBdyQL@@Y;;Qtjh1s({vq-m^Hk{@cp%WV=aA0j2XB^NQ*}bX
+zLrqpbG?)MSji--;&oNJ)6!Hj4voOHe9Z(Y*#-JB9L}e@A(F9F<V3L+|ZKJd8qXj4Q
+zjNFMD`OGtpc|xvJqRBbfD34!VS}O7B#2U*iXeH+5CQm*eYasu6Eq`qL2FQg1B|Kj_
+z=5hJAD5oMLtstiOU?Y#CD4%(IlE5)1<o6U_aLn&Z$1QTqWAZVO=+`{@*XWo}%A28w
+z{1&PxX?KFaxc)AfS}x}^s5~zBcyb<>ZJwM_xuYVd$uV>C{C_Sjp@RId$1*I}f^1oG
+zMvh>x<bHy4&MVHyAmROh&PW<0n!Ccsv-LT&ErgnH*-K6G-;wE<SF)KaOMwxX1%~>}
+zJxJwM6y(h-R`$iFhkrJ%`I}*^67B0i>48fa6Zsqk%*ek)!oKCSN&lK$YEoT<4lwC=
+zRYS7nvNbaeeU>bA!-{lXl5Hrk@~gkCDr6S&6uZX4Oq2JklF&k6vL$;JZJP70iZkXF
+zN+@x8fM$POO`9M7Sz!Gzv8S&tMyKAqS%^tK&dO%grK*qr94IikVh$zQ#YkY}2^UW*
+z+!Yvk%*D?s91M)afUU6=6Tp@;ZDpsILGHH|GNt8&it^Q!D9TC$Lod%RH_)$4QT8E|
+z?Tzu_6!rJBMz*jFoqh_ovGSkBgq~(!oii|0KiD1fLdk-faxdnMnlgN_M{65USKdw<
+zHlO(qm~kxgwmhh+%$L@o3I=*DVD}bpr~~WUEA~*%B@YLqR&%CEF&_sz6}5~Rj;oa)
+zSb)?;*@Gu=7+rc9*4VncprtJ0;oi!3E?U3SiJ5yLkW>2PSIny6!YW14*!Fcm-U^jZ
+z<6XxTl!G^!muUdBFEO<+VBOXFHBIe9-{fI%R3?f8$D`DpIju^YRQ=H6j1i<E@*(=A
+z1<RRr=W4aQX4PM3V8Q9UG(~QCQ=RA{MAHhVRq3B&O0`^W&zqQop<=tkfkfk-;P^az
+zTL{KcbQ4+HvWvUgUNG>Atv%3w)~(QXV^s;-t17vf9Gt|irtErojJ)*~^z@zLix3%8
+z>UaxA4FxCK%xP8Hh*HRuGsY1xgQBJ=E^A7<i5zGZEz>?hu8_)n=<wRJ9M*(>O3F%*
+z^DTwZX$YL>Fpq|Q5y;||FIvGOoNUHS{3c$B$v4n>i}UlTX|NnMe{sSHjPTubX^m#a
+zL^s&!(w|`Tv8_qC2uyk<$W;wCrp!hsbY4><=di^Ea&44@tGvHq&*S^1N*?w%?0KAi
+zl|1Zk*z+*?MCrE~{R9!^mK8ZxpYbhZ%$VoHNNW2$70BXsSyi8(fZgR==wHj_*3q}v
+z@zKy!U?f<>6erWmTsy8|hTmEO*HLro-EA`h+o&GEK*d@EVcZN=RIA!#{c!y22hr-6
+zE3J-(CXbqv@7|;u4w^+RA0uy`$L#31#(&n#4=(Kd4VWrLtxVCK8?Tj>DY|o`o64M9
+zUN*sK=(VHfYxT+$^^g?R+$f984`4lifD0`!*`Q2(F_8N$W#SBck;yh>U$yXyN6m{H
+zjKK2+*P{g1x0d~XS${e;`n}Cp9XPE^SiYQ?kwv+RlDIyU>7Sa$a1H+w!hUW=&ZrU0
+z;Z;9f?^YUjY`dGR-Uf8~y|@XGzYlll4qka<E5c<is?F`7@|9Ru*y+wLUxT?+=L2f@
+ztMd9+x<Y5k_oPsd9jC*rTfb%hR_5nRZ<n7=o}PT&_s~Omo8CxrcY&d$fbC1|0$^}n
+zlE2|blBad)Lzu^%;T1S{`5i7>ZVtGidys4uU0mm#gS_(o((2h;-u8~-orT`Bs53WX
+z&XW(KkOkx9I~U{!VLp^0qpa(1U@!RxxXCH6oy*gnOF8G(*WH4@8pDpe4LU(jvb&Dw
+z$Kc9lE`$TQ&5D0T3kNvQ+uKtRu5WJ}@sfE8T|?a$<v&ml)%}5@JcGue;hYu8z*Dzh
+zZNyz%cG`eL%x30S1s>N@UsVH3seKix&q0uuT99L|)Jk_ZQ6F@-bRF7-UC;z>5NFzF
+zu_aLf7$W;(E0<t-{?__u-ZA9|(C>BUpuXIPyCC*E_s^)Vhty@jklqCQJLc=?maYRw
+zJ{Fpj%aEU4tXOAlxgUd&sjc%S1nPdgEdL51Z@%tKXG?g-m~}#Mx%_vCn)6UPE8WM8
+zPchF%<PIlY3#{m5Uf?}OA9O`N=(DGHfk%F2QO%FV(kHL2agsIebZdY<dwMr(Z1!rr
+zjj0T4;US3*YiVN#{_(N2agU1ks`$$)-lyV+RQy#He@(^vReV6jT`KNYagT}*s<=<Z
+zF%>6NoK$gI#fK3K@x`%Q20*kuu(a_FjP-aAGfTh1;P&utt#pAD2fg$+q&`Dxmel7-
+zO_F+$)G1OCQa>g2by5?gGNiss>L{tlNpbfoeUsF2QoPIW`7=^6Qq!cmNWDVpAyTiB
+z>LA4tE8R=#GO1mpRzUO8R#NXLwF%Tf>`*NJXe^i<h(-FlR*5~)uHIxck`8W61-rw&
+zeNp6f^d_QZ5J~OWx^3I;pooNHv3NQd=>qF2(H&1768(oF@x+iw;Xl89TOtD8?2C4%
+z<A<Zk)SZg!h}gAT^!KJx_-Agg8`6WQ7fk9ld*iWHA~h6ChX;evWHO#yCDQSDus<9d
+z3Wk%9pcVIjPq-~sp*qEU7W_XqA0m1E@hyr)(U|r4UzdUZ9ii85C=*_WpZXT?E#O<g
+zw}5W}-vYh`d<*y%@Gan5z_);J0p9}uzb$YF&WrPfz;2ydI^Cnwuj;g0rwN_@o=$T*
+zeL|<lbowKmKBLp;bz0ErOFBKT(~CNlI{g=&de#rFT)pajV%L$~UWT9g7Vs_LTfnz~
+zZvo!|z6E>>_!jUj;9J1AfNufc0{>$RtofMO&qEw*T5W#1-i5OV32}c?jBDH*OO)yO
+zK$?JG%c`&D?F0Cb9ACNfFn`LG5Kg6{$+VqJ$B>(9R8sq+{i$f$j`SR2UXyMq8H*%_
+zyv!Ss8R^043vvVr`r@f5!6tyNfy7qQ&7h-$(a2$FAyPXP>P?ew1>OBfG@T-_2ynh4
+z7ANW;;sFiN`$#A7HGR69a6e#gDx6La5%mD|hx_{C5uyZ8JP}ph7zB;4`Ee+NCBp_G
+zj)f4665s><NRKKT*AR`f^cdlzVWp!tB8H9MGgxW&_o%K6q@(z)fH1B2KvFzNMO#E1
+zJrU`C;TQ?=1A{%r@f7h(<I$epbTpL+N22084emGTDRHcU$3H}aI>RCk@;C{(e}!Lk
+zSP0_t<l;sYGAC!G<A<Qv0!qg5IdMa{HzuAo++!>6AhUpDq|3rd*!_6}-D919GNRE#
+z;@=Fhg6M+L*Bgt9B}4T-*FepL)1Z#9q{I^q%f#Gfw7769qQY&YK0yUOiD-B$^R_YX
+z4nz~%5uMzDX!z5JPJ|IX8)iQif(y%=Pa5M56Gq2LBQdeOV4O6X$BjAFOCgTpW!3dK
+zN9KJe|1|MRd}rP4zQ-b4z`$V`1ish$0ImRt#5x!Aj3aRo2bx&U@2ZKLaQ={Zi&u_{
+z#5*-E=yJY)B7XrV!&rW=#&cLi#2p$p<MROGuV|dW!A|0CjVCnbAt=fl#(^G|Kc+E%
+zz<`*i4q2Yi`iyB@(Ea%%uN++_{||{_pJ%l_PH22W<5R%kBdZE$5Le^5I?O{=)#Y#0
+z;e|T9REOW=RxY=<x(=_c!#CC8kJMrQW`O&Lh7g+T@QylsR~`Or9loy)ch=#D>u{tF
+zAF9KtIy_W|>1#1`>h~#l))&)6@GKXPY~hus;QS2Y`UtL%;`$h_4Y;t1)m-IKZyvSd
+z>C9Vkaem_vvid!N+mQZm%MaogFRt}f%6HKvDA(E|Y<MgMk-A<6t`zRY)~Dj^1pSKQ
+zP?Yi<Zl-c6E~(s#OKP72w+sKHysfINvR%scclxI}Qo^osj@Zen_939E9jI!Tb4hM+
+zE~U0NMOOAEy({Vc$lZy&JqRg0yWV%a9mm~k%DarWzj!-~yQg@&iMx$>`v+5Q9PW;B
+c%`S^y4&la&?dxzj9ffIO;4KFR=ui;;3*nGnlmGw#
+
+literal 0
+HcmV?d00001
+
+diff --git a/shell.c b/shell.c
+index 1eaf6dd..71b610f 100644
+--- a/shell.c
++++ b/shell.c
+@@ -60,22 +60,50 @@ runcmd(struct cmd *cmd)
+     ecmd = (struct execcmd*)cmd;
+     if(ecmd->argv[0] == 0)
+       exit(0);
+-    fprintf(stderr, "exec not implemented\n");
++    //fprintf(stderr, "exec not implemented\n");
+     // Your code here ...
++    execvp(ecmd->argv[0], ecmd->argv);
+     break;
+ 
+   case '>':
+   case '<':
+     rcmd = (struct redircmd*)cmd;
+-    fprintf(stderr, "redir not implemented\n");
++    //fprintf(stderr, "redir not implemented\n");
+     // Your code here ...
++    close(rcmd->fd);
++    if (open(rcmd->file, rcmd->mode, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) < 0) {
++      fprintf(stderr, "Redirect %s failed\n", rcmd->file);
++      exit(0);
++    }
+     runcmd(rcmd->cmd);
+     break;
+ 
+   case '|':
+     pcmd = (struct pipecmd*)cmd;
+-    fprintf(stderr, "pipe not implemented\n");
++    //fprintf(stderr, "pipe not implemented\n");
+     // Your code here ...
++    if (pipe(p) < 0) fprintf(stderr, "Pipe failed\n");
++
++    if (fork1() == 0) {
++      close(1);
++      dup2(p[1], 1);
++      close(p[0]);
++      close(p[1]);
++      runcmd(pcmd->left);
++    }
++
++    if (fork1() == 0){
++      close(0);
++      dup2(p[0], 0);
++      close(p[0]);
++      close(p[1]);
++      runcmd(pcmd->right);
++    }
++
++    close(p[0]);
++    close(p[1]);
++    wait(NULL);
++    wait(NULL);
+     break;
+   }    
+   exit(0);
+-- 
+1.9.1
+

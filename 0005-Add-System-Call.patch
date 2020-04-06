@@ -1,0 +1,564 @@
+From 02ff13dee2760158f4fa99bc51d2e47706101236 Mon Sep 17 00:00:00 2001
+From: Vin <zl1477@nyu.edu>
+Date: Sun, 5 Apr 2020 20:08:23 -0400
+Subject: [PATCH 5/6] Add System Call
+
+---
+ .cvsignore         | 0
+ .dir-locals.el     | 0
+ .gdbinit.tmpl      | 0
+ .gitignore         | 0
+ BUGS               | 0
+ Dockerfile         | 0
+ LICENSE            | 0
+ Makefile           | 0
+ Notes              | 0
+ README.md          | 0
+ TRICKS             | 0
+ asm.h              | 0
+ big_test_file.txt  | 0
+ bio.c              | 0
+ bootasm.S          | 0
+ bootmain.c         | 0
+ buf.h              | 0
+ cat.c              | 0
+ console.c          | 0
+ date.c             | 0
+ date.h             | 0
+ defs.h             | 0
+ echo.c             | 0
+ elf.h              | 0
+ entry.S            | 0
+ entryother.S       | 0
+ example.c          | 0
+ exec.c             | 0
+ fcntl.h            | 0
+ file.c             | 0
+ file.h             | 0
+ forktest.c         | 0
+ fs.c               | 0
+ fs.h               | 0
+ gdbutil            | 0
+ grep.c             | 0
+ hello.c            | 0
+ ide.c              | 0
+ init.c             | 0
+ initcode.S         | 0
+ ioapic.c           | 0
+ kalloc.c           | 0
+ kbd.c              | 0
+ kbd.h              | 0
+ kernel.ld          | 0
+ kill.c             | 0
+ lapic.c            | 0
+ launch.json.tmpl   | 0
+ ln.c               | 0
+ log.c              | 0
+ long_test_file.txt | 0
+ ls.c               | 0
+ main.c             | 0
+ memide.c           | 0
+ memlayout.h        | 0
+ mkdir.c            | 0
+ mkfs.c             | 0
+ mmu.h              | 0
+ mp.c               | 0
+ mp.h               | 0
+ n.txt              | 0
+ numbers.c          | 0
+ param.h            | 0
+ picirq.c           | 0
+ pipe.c             | 0
+ printf.c           | 0
+ proc.c             | 0
+ proc.h             | 0
+ rm.c               | 0
+ runoff.list        | 0
+ runoff.spec        | 0
+ sh.c               | 0
+ shell.c            | 0
+ sleep1.p           | 0
+ sort.c             | 0
+ spinlock.c         | 0
+ spinlock.h         | 0
+ stat.h             | 0
+ stressfs.c         | 0
+ string.c           | 0
+ swtch.S            | 0
+ symlink.patch      | 0
+ syscall.c          | 3 ++-
+ syscall.h          | 0
+ sysfile.c          | 3 ++-
+ sysproc.c          | 0
+ test_file.txt      | 0
+ timer.c            | 0
+ toc.ftr            | 0
+ toc.hdr            | 0
+ trap.c             | 0
+ trapasm.S          | 0
+ traps.h            | 0
+ types.h            | 0
+ uart.c             | 0
+ ulib.c             | 0
+ umalloc.c          | 0
+ user.h             | 0
+ usertests.c        | 0
+ usys.S             | 0
+ vm.c               | 0
+ wc.c               | 0
+ x86.h              | 0
+ zombie.c           | 0
+ 104 files changed, 4 insertions(+), 2 deletions(-)
+ mode change 100644 => 100755 .cvsignore
+ mode change 100644 => 100755 .dir-locals.el
+ mode change 100644 => 100755 .gdbinit.tmpl
+ mode change 100644 => 100755 .gitignore
+ mode change 100644 => 100755 BUGS
+ mode change 100644 => 100755 Dockerfile
+ mode change 100644 => 100755 LICENSE
+ mode change 100644 => 100755 Makefile
+ mode change 100644 => 100755 Notes
+ mode change 100644 => 100755 README.md
+ mode change 100644 => 100755 TRICKS
+ mode change 100644 => 100755 asm.h
+ mode change 100644 => 100755 big_test_file.txt
+ mode change 100644 => 100755 bio.c
+ mode change 100644 => 100755 bootasm.S
+ mode change 100644 => 100755 bootmain.c
+ mode change 100644 => 100755 buf.h
+ mode change 100644 => 100755 cat.c
+ mode change 100644 => 100755 console.c
+ mode change 100644 => 100755 date.c
+ mode change 100644 => 100755 date.h
+ mode change 100644 => 100755 defs.h
+ mode change 100644 => 100755 echo.c
+ mode change 100644 => 100755 elf.h
+ mode change 100644 => 100755 entry.S
+ mode change 100644 => 100755 entryother.S
+ mode change 100644 => 100755 example.c
+ mode change 100644 => 100755 exec.c
+ mode change 100644 => 100755 fcntl.h
+ mode change 100644 => 100755 file.c
+ mode change 100644 => 100755 file.h
+ mode change 100644 => 100755 forktest.c
+ mode change 100644 => 100755 fs.c
+ mode change 100644 => 100755 fs.h
+ mode change 100644 => 100755 gdbutil
+ mode change 100644 => 100755 grep.c
+ mode change 100644 => 100755 hello.c
+ mode change 100644 => 100755 ide.c
+ mode change 100644 => 100755 init.c
+ mode change 100644 => 100755 initcode.S
+ mode change 100644 => 100755 ioapic.c
+ mode change 100644 => 100755 kalloc.c
+ mode change 100644 => 100755 kbd.c
+ mode change 100644 => 100755 kbd.h
+ mode change 100644 => 100755 kernel.ld
+ mode change 100644 => 100755 kill.c
+ mode change 100644 => 100755 lapic.c
+ mode change 100644 => 100755 launch.json.tmpl
+ mode change 100644 => 100755 ln.c
+ mode change 100644 => 100755 log.c
+ mode change 100644 => 100755 long_test_file.txt
+ mode change 100644 => 100755 ls.c
+ mode change 100644 => 100755 main.c
+ mode change 100644 => 100755 memide.c
+ mode change 100644 => 100755 memlayout.h
+ mode change 100644 => 100755 mkdir.c
+ mode change 100644 => 100755 mkfs.c
+ mode change 100644 => 100755 mmu.h
+ mode change 100644 => 100755 mp.c
+ mode change 100644 => 100755 mp.h
+ mode change 100644 => 100755 n.txt
+ mode change 100644 => 100755 numbers.c
+ mode change 100644 => 100755 param.h
+ mode change 100644 => 100755 picirq.c
+ mode change 100644 => 100755 pipe.c
+ mode change 100644 => 100755 printf.c
+ mode change 100644 => 100755 proc.c
+ mode change 100644 => 100755 proc.h
+ mode change 100644 => 100755 rm.c
+ mode change 100644 => 100755 runoff.list
+ mode change 100644 => 100755 runoff.spec
+ mode change 100644 => 100755 sh.c
+ mode change 100644 => 100755 shell.c
+ mode change 100644 => 100755 sleep1.p
+ mode change 100644 => 100755 sort.c
+ mode change 100644 => 100755 spinlock.c
+ mode change 100644 => 100755 spinlock.h
+ mode change 100644 => 100755 stat.h
+ mode change 100644 => 100755 stressfs.c
+ mode change 100644 => 100755 string.c
+ mode change 100644 => 100755 swtch.S
+ mode change 100644 => 100755 symlink.patch
+ mode change 100644 => 100755 syscall.c
+ mode change 100644 => 100755 syscall.h
+ mode change 100644 => 100755 sysfile.c
+ mode change 100644 => 100755 sysproc.c
+ mode change 100644 => 100755 test_file.txt
+ mode change 100644 => 100755 timer.c
+ mode change 100644 => 100755 toc.ftr
+ mode change 100644 => 100755 toc.hdr
+ mode change 100644 => 100755 trap.c
+ mode change 100644 => 100755 trapasm.S
+ mode change 100644 => 100755 traps.h
+ mode change 100644 => 100755 types.h
+ mode change 100644 => 100755 uart.c
+ mode change 100644 => 100755 ulib.c
+ mode change 100644 => 100755 umalloc.c
+ mode change 100644 => 100755 user.h
+ mode change 100644 => 100755 usertests.c
+ mode change 100644 => 100755 usys.S
+ mode change 100644 => 100755 vm.c
+ mode change 100644 => 100755 wc.c
+ mode change 100644 => 100755 x86.h
+ mode change 100644 => 100755 zombie.c
+
+diff --git a/.cvsignore b/.cvsignore
+old mode 100644
+new mode 100755
+diff --git a/.dir-locals.el b/.dir-locals.el
+old mode 100644
+new mode 100755
+diff --git a/.gdbinit.tmpl b/.gdbinit.tmpl
+old mode 100644
+new mode 100755
+diff --git a/.gitignore b/.gitignore
+old mode 100644
+new mode 100755
+diff --git a/BUGS b/BUGS
+old mode 100644
+new mode 100755
+diff --git a/Dockerfile b/Dockerfile
+old mode 100644
+new mode 100755
+diff --git a/LICENSE b/LICENSE
+old mode 100644
+new mode 100755
+diff --git a/Makefile b/Makefile
+old mode 100644
+new mode 100755
+diff --git a/Notes b/Notes
+old mode 100644
+new mode 100755
+diff --git a/README.md b/README.md
+old mode 100644
+new mode 100755
+diff --git a/TRICKS b/TRICKS
+old mode 100644
+new mode 100755
+diff --git a/asm.h b/asm.h
+old mode 100644
+new mode 100755
+diff --git a/big_test_file.txt b/big_test_file.txt
+old mode 100644
+new mode 100755
+diff --git a/bio.c b/bio.c
+old mode 100644
+new mode 100755
+diff --git a/bootasm.S b/bootasm.S
+old mode 100644
+new mode 100755
+diff --git a/bootmain.c b/bootmain.c
+old mode 100644
+new mode 100755
+diff --git a/buf.h b/buf.h
+old mode 100644
+new mode 100755
+diff --git a/cat.c b/cat.c
+old mode 100644
+new mode 100755
+diff --git a/console.c b/console.c
+old mode 100644
+new mode 100755
+diff --git a/date.c b/date.c
+old mode 100644
+new mode 100755
+diff --git a/date.h b/date.h
+old mode 100644
+new mode 100755
+diff --git a/defs.h b/defs.h
+old mode 100644
+new mode 100755
+diff --git a/echo.c b/echo.c
+old mode 100644
+new mode 100755
+diff --git a/elf.h b/elf.h
+old mode 100644
+new mode 100755
+diff --git a/entry.S b/entry.S
+old mode 100644
+new mode 100755
+diff --git a/entryother.S b/entryother.S
+old mode 100644
+new mode 100755
+diff --git a/example.c b/example.c
+old mode 100644
+new mode 100755
+diff --git a/exec.c b/exec.c
+old mode 100644
+new mode 100755
+diff --git a/fcntl.h b/fcntl.h
+old mode 100644
+new mode 100755
+diff --git a/file.c b/file.c
+old mode 100644
+new mode 100755
+diff --git a/file.h b/file.h
+old mode 100644
+new mode 100755
+diff --git a/forktest.c b/forktest.c
+old mode 100644
+new mode 100755
+diff --git a/fs.c b/fs.c
+old mode 100644
+new mode 100755
+diff --git a/fs.h b/fs.h
+old mode 100644
+new mode 100755
+diff --git a/gdbutil b/gdbutil
+old mode 100644
+new mode 100755
+diff --git a/grep.c b/grep.c
+old mode 100644
+new mode 100755
+diff --git a/hello.c b/hello.c
+old mode 100644
+new mode 100755
+diff --git a/ide.c b/ide.c
+old mode 100644
+new mode 100755
+diff --git a/init.c b/init.c
+old mode 100644
+new mode 100755
+diff --git a/initcode.S b/initcode.S
+old mode 100644
+new mode 100755
+diff --git a/ioapic.c b/ioapic.c
+old mode 100644
+new mode 100755
+diff --git a/kalloc.c b/kalloc.c
+old mode 100644
+new mode 100755
+diff --git a/kbd.c b/kbd.c
+old mode 100644
+new mode 100755
+diff --git a/kbd.h b/kbd.h
+old mode 100644
+new mode 100755
+diff --git a/kernel.ld b/kernel.ld
+old mode 100644
+new mode 100755
+diff --git a/kill.c b/kill.c
+old mode 100644
+new mode 100755
+diff --git a/lapic.c b/lapic.c
+old mode 100644
+new mode 100755
+diff --git a/launch.json.tmpl b/launch.json.tmpl
+old mode 100644
+new mode 100755
+diff --git a/ln.c b/ln.c
+old mode 100644
+new mode 100755
+diff --git a/log.c b/log.c
+old mode 100644
+new mode 100755
+diff --git a/long_test_file.txt b/long_test_file.txt
+old mode 100644
+new mode 100755
+diff --git a/ls.c b/ls.c
+old mode 100644
+new mode 100755
+diff --git a/main.c b/main.c
+old mode 100644
+new mode 100755
+diff --git a/memide.c b/memide.c
+old mode 100644
+new mode 100755
+diff --git a/memlayout.h b/memlayout.h
+old mode 100644
+new mode 100755
+diff --git a/mkdir.c b/mkdir.c
+old mode 100644
+new mode 100755
+diff --git a/mkfs.c b/mkfs.c
+old mode 100644
+new mode 100755
+diff --git a/mmu.h b/mmu.h
+old mode 100644
+new mode 100755
+diff --git a/mp.c b/mp.c
+old mode 100644
+new mode 100755
+diff --git a/mp.h b/mp.h
+old mode 100644
+new mode 100755
+diff --git a/n.txt b/n.txt
+old mode 100644
+new mode 100755
+diff --git a/numbers.c b/numbers.c
+old mode 100644
+new mode 100755
+diff --git a/param.h b/param.h
+old mode 100644
+new mode 100755
+diff --git a/picirq.c b/picirq.c
+old mode 100644
+new mode 100755
+diff --git a/pipe.c b/pipe.c
+old mode 100644
+new mode 100755
+diff --git a/printf.c b/printf.c
+old mode 100644
+new mode 100755
+diff --git a/proc.c b/proc.c
+old mode 100644
+new mode 100755
+diff --git a/proc.h b/proc.h
+old mode 100644
+new mode 100755
+diff --git a/rm.c b/rm.c
+old mode 100644
+new mode 100755
+diff --git a/runoff.list b/runoff.list
+old mode 100644
+new mode 100755
+diff --git a/runoff.spec b/runoff.spec
+old mode 100644
+new mode 100755
+diff --git a/sh.c b/sh.c
+old mode 100644
+new mode 100755
+diff --git a/shell.c b/shell.c
+old mode 100644
+new mode 100755
+diff --git a/sleep1.p b/sleep1.p
+old mode 100644
+new mode 100755
+diff --git a/sort.c b/sort.c
+old mode 100644
+new mode 100755
+diff --git a/spinlock.c b/spinlock.c
+old mode 100644
+new mode 100755
+diff --git a/spinlock.h b/spinlock.h
+old mode 100644
+new mode 100755
+diff --git a/stat.h b/stat.h
+old mode 100644
+new mode 100755
+diff --git a/stressfs.c b/stressfs.c
+old mode 100644
+new mode 100755
+diff --git a/string.c b/string.c
+old mode 100644
+new mode 100755
+diff --git a/swtch.S b/swtch.S
+old mode 100644
+new mode 100755
+diff --git a/symlink.patch b/symlink.patch
+old mode 100644
+new mode 100755
+diff --git a/syscall.c b/syscall.c
+old mode 100644
+new mode 100755
+index 2cda9e9..03ae2d3
+--- a/syscall.c
++++ b/syscall.c
+@@ -127,7 +127,7 @@ static int (*syscalls[])(void) = {
+ [SYS_dup2]    sys_dup2,
+ };
+ 
+-char* syscall_name[22] =
++char* syscall_name[24] =
+ {
+         [SYS_fork]    "fork",
+         [SYS_exit]    "exit",
+@@ -150,6 +150,7 @@ char* syscall_name[22] =
+         [SYS_link]    "link",
+         [SYS_mkdir]   "mkdir",
+         [SYS_close]   "close",
++        [SYS_dup2]    "dup2",
+ };
+ 
+ void
+diff --git a/syscall.h b/syscall.h
+old mode 100644
+new mode 100755
+diff --git a/sysfile.c b/sysfile.c
+old mode 100644
+new mode 100755
+index 94a11db..f938510
+--- a/sysfile.c
++++ b/sysfile.c
+@@ -85,7 +85,8 @@ int sys_dup2(void) {
+         proc->ofile[newfd] = oldfile;
+         filedup(oldfile);
+     }
+-
++    proc->ofile[newfd] = oldfile;
++    filedup(oldfile);
+     return newfd;
+ }
+ 
+diff --git a/sysproc.c b/sysproc.c
+old mode 100644
+new mode 100755
+diff --git a/test_file.txt b/test_file.txt
+old mode 100644
+new mode 100755
+diff --git a/timer.c b/timer.c
+old mode 100644
+new mode 100755
+diff --git a/toc.ftr b/toc.ftr
+old mode 100644
+new mode 100755
+diff --git a/toc.hdr b/toc.hdr
+old mode 100644
+new mode 100755
+diff --git a/trap.c b/trap.c
+old mode 100644
+new mode 100755
+diff --git a/trapasm.S b/trapasm.S
+old mode 100644
+new mode 100755
+diff --git a/traps.h b/traps.h
+old mode 100644
+new mode 100755
+diff --git a/types.h b/types.h
+old mode 100644
+new mode 100755
+diff --git a/uart.c b/uart.c
+old mode 100644
+new mode 100755
+diff --git a/ulib.c b/ulib.c
+old mode 100644
+new mode 100755
+diff --git a/umalloc.c b/umalloc.c
+old mode 100644
+new mode 100755
+diff --git a/user.h b/user.h
+old mode 100644
+new mode 100755
+diff --git a/usertests.c b/usertests.c
+old mode 100644
+new mode 100755
+diff --git a/usys.S b/usys.S
+old mode 100644
+new mode 100755
+diff --git a/vm.c b/vm.c
+old mode 100644
+new mode 100755
+diff --git a/wc.c b/wc.c
+old mode 100644
+new mode 100755
+diff --git a/x86.h b/x86.h
+old mode 100644
+new mode 100755
+diff --git a/zombie.c b/zombie.c
+old mode 100644
+new mode 100755
+-- 
+1.9.1
+

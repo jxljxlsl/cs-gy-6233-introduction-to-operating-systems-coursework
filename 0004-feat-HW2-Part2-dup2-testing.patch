@@ -1,0 +1,72 @@
+From 9c8f2fd8ae58c778d174f16f25b9f809cda8f5ab Mon Sep 17 00:00:00 2001
+From: Zhuo Liu <vin_lz@outlook.com>
+Date: Thu, 26 Mar 2020 19:05:26 -0400
+Subject: [PATCH 4/6] feat: HW2 Part2 dup2 testing
+
+---
+ .gitignore |  1 +
+ hello.c    | 26 +++++++++++++++++++++++---
+ sysfile.c  |  2 +-
+ 3 files changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 7de5ccd..de9cab4 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -19,3 +19,4 @@ mkfs
+ .DS_Store
+ doggerel.txt
+ d.txt
++tricky.txt
+diff --git a/hello.c b/hello.c
+index 5f3aa81..9287151 100644
+--- a/hello.c
++++ b/hello.c
+@@ -1,7 +1,27 @@
+ #include "types.h"
++#include "stat.h"
+ #include "user.h"
++#include "fcntl.h"
+ 
+-int main(void) {
+-    printf(1, "Hello world\n");
+-    exit();
++
++// int main(void) {
++//     printf(1, "Hello world\n");
++//     exit();
++// }
++
++int
++main(int argc, char *argv[])
++{
++  int oldfd = open("tricky.txt", O_CREATE|O_WRONLY);
++  int newfd = 10;
++  printf(0,"oldfd = %d\n",oldfd);
++
++  for (newfd =0;newfd<10;newfd++){
++  printf(0,"newfd = %d\n",newfd);
++  if (dup2(oldfd,newfd) == -1)
++        printf(0,"%s\n"," the newfd is already taken or oldfd is not allocated");
++  else
++        printf(0,"%s\n","success" );
+ }
++  exit();
++}
+\ No newline at end of file
+diff --git a/sysfile.c b/sysfile.c
+index 4e0c96b..94a11db 100644
+--- a/sysfile.c
++++ b/sysfile.c
+@@ -79,7 +79,7 @@ int sys_dup2(void) {
+         return newfd;
+     }
+     if (newfile->ref > 0) {
+-        fileclose(oldfile);
++        fileclose(newfile);
+     }
+     if (proc->ofile[newfd] == 0) {
+         proc->ofile[newfd] = oldfile;
+-- 
+1.9.1
+

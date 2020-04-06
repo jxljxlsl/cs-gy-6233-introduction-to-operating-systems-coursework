@@ -1,0 +1,128 @@
+From a984cb4900e9d235cac4ab115f12a079e6a246de Mon Sep 17 00:00:00 2001
+From: Zhuo Liu <vin_lz@outlook.com>
+Date: Thu, 26 Mar 2020 16:46:54 -0400
+Subject: [PATCH 3/6] feat: HW2 Part2 dup2 untested
+
+---
+ .gitignore |  1 +
+ Makefile   |  2 +-
+ syscall.c  |  2 ++
+ syscall.h  |  1 +
+ sysfile.c  | 26 ++++++++++++++++++++++++++
+ user.h     |  1 +
+ usys.S     |  1 +
+ 7 files changed, 33 insertions(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index ad459a4..7de5ccd 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -18,3 +18,4 @@ mkfs
+ .gdb_history
+ .DS_Store
+ doggerel.txt
++d.txt
+diff --git a/Makefile b/Makefile
+index 2f78b16..2570e73 100644
+--- a/Makefile
++++ b/Makefile
+@@ -190,7 +190,7 @@ UPROGS=\
+ 	_example\
+ 	_sort\
+ 	_numbers\
+-        _date\
++	_date\
+ 
+ fs.img: mkfs README.md n.txt big_test_file.txt long_test_file.txt test_file.txt $(UPROGS)
+ 	./mkfs fs.img README.md n.txt big_test_file.txt long_test_file.txt test_file.txt $(UPROGS)
+diff --git a/syscall.c b/syscall.c
+index cd32582..2cda9e9 100644
+--- a/syscall.c
++++ b/syscall.c
+@@ -99,6 +99,7 @@ extern int sys_wait(void);
+ extern int sys_write(void);
+ extern int sys_uptime(void);
+ extern int sys_date(void);
++extern int sys_dup2(void);
+ 
+ static int (*syscalls[])(void) = {
+ [SYS_fork]    sys_fork,
+@@ -123,6 +124,7 @@ static int (*syscalls[])(void) = {
+ [SYS_mkdir]   sys_mkdir,
+ [SYS_close]   sys_close,
+ [SYS_date]    sys_date,
++[SYS_dup2]    sys_dup2,
+ };
+ 
+ char* syscall_name[22] =
+diff --git a/syscall.h b/syscall.h
+index 1a620b9..56c922a 100644
+--- a/syscall.h
++++ b/syscall.h
+@@ -21,3 +21,4 @@
+ #define SYS_mkdir  20
+ #define SYS_close  21
+ #define SYS_date   22
++#define SYS_dup2   23
+\ No newline at end of file
+diff --git a/sysfile.c b/sysfile.c
+index 2209f6e..4e0c96b 100644
+--- a/sysfile.c
++++ b/sysfile.c
+@@ -63,6 +63,32 @@ sys_dup(void)
+   return fd;
+ }
+ 
++int sys_dup2(void) {
++    struct file *oldfile, *newfile;
++    int oldfd, newfd;
++    if (argfd(0, &oldfd, &oldfile) < 0) {
++        return -1;
++    }
++    if (argfd(1, &newfd, &newfile) < 0) {
++        return -1;
++    }
++    if (argint(1, &newfd) < 0) {
++        return -1;
++    }
++    if (oldfile == newfile) {
++        return newfd;
++    }
++    if (newfile->ref > 0) {
++        fileclose(oldfile);
++    }
++    if (proc->ofile[newfd] == 0) {
++        proc->ofile[newfd] = oldfile;
++        filedup(oldfile);
++    }
++
++    return newfd;
++}
++
+ int
+ sys_read(void)
+ {
+diff --git a/user.h b/user.h
+index 4eafb26..43d259a 100644
+--- a/user.h
++++ b/user.h
+@@ -24,6 +24,7 @@ char* sbrk(int);
+ int sleep(int);
+ int uptime(void);
+ int date(struct rtcdate*);
++int dup2(int oldfd, int newfd);
+ 
+ // ulib.c
+ int stat(char*, struct stat*);
+diff --git a/usys.S b/usys.S
+index ba76d54..f579e72 100644
+--- a/usys.S
++++ b/usys.S
+@@ -30,3 +30,4 @@ SYSCALL(sbrk)
+ SYSCALL(sleep)
+ SYSCALL(uptime)
+ SYSCALL(date)
++SYSCALL(dup2)
+-- 
+1.9.1
+
