@@ -48,6 +48,7 @@ allocproc(void)
   return 0;
 
 found:
+  p->tickets = 20;
   p->state = EMBRYO;
   p->pid = nextpid++;
   release(&ptable.lock);
@@ -270,6 +271,11 @@ scheduler(void)
 {
   struct proc *p;
   int foundproc = 1;
+  //
+  int winner = 0;
+  int count = 0;
+  int total_tickets = 0;
+  //
 
   for(;;){
     // Enable interrupts on this processor.
@@ -277,12 +283,28 @@ scheduler(void)
 
     if (!foundproc) hlt();
     foundproc = 0;
+    //
+    total_tickets = 0;
+
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        if (p->state == RUNNABLE) {
+            total_tickets += p->tickets;
+        }
+    }
+    winner = random_at_most(total_tickets);
+    count = 0;
+    //
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
+      int temp = count + p->tickets;
+      if (temp < winner) {
+          count = temp;
+          continue;
+      }
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
@@ -297,6 +319,7 @@ scheduler(void)
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       proc = 0;
+      break;
     }
     release(&ptable.lock);
 
